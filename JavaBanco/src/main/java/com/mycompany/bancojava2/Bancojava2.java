@@ -1,32 +1,31 @@
 package com.mycompany.bancojava2;
 
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class Bancojava2 {
 
     static Scanner t = new Scanner(System.in);
     static Scanner t2 = new Scanner(System.in);
+   
 
-    public static String[] cad() {
+    public static String[] cad(){
 
         String aux[] = new String[3];
         int op = 0;
-        System.out.println("Informe o seu nome: ");
-        aux[0] = t.nextLine();
+        aux[0] = JOptionPane.showInputDialog(null, "Informe o seu nome", "cadastro", JOptionPane.QUESTION_MESSAGE);
         while (op != 2) {
-            System.out.println("Informe o seu numero do seu celular: ");
-            aux[1] = t.nextLine();
+            aux[1] = JOptionPane.showInputDialog(null, "Informe o numero do seu celular", "cadastro", JOptionPane.QUESTION_MESSAGE);
             if (aux[1].length() != 9) {
-                System.out.println("Informe um numero de celular valido");
+                JOptionPane.showMessageDialog(null, "ERRO!\nInforme um numero de celular valido", "cadastro", JOptionPane.WARNING_MESSAGE);
             } else {
                 op = 2;
             }
         }
         while (op != 1) {
-            System.out.println("Informe seu Cpf: ");
-            aux[2] = t.nextLine();
+            aux[2] = JOptionPane.showInputDialog(null, "Informe seu Cpf", "cadastro", JOptionPane.QUESTION_MESSAGE);
             if (aux[2].length() != 11) {
-                System.out.println("Informe um cpf valido");
+                JOptionPane.showMessageDialog(null, "ERRO!\nInforme um cpf valido", "cadastro", JOptionPane.WARNING_MESSAGE);
             } else {
                 op = 1;
             }
@@ -37,8 +36,8 @@ public class Bancojava2 {
     public static String trocacel(String[] cel) {
 
         String novocel[] = new String[10];
-        System.out.println("Informe o novo numero de celular");
-        novocel[0] = t.nextLine();
+
+        novocel[0] = JOptionPane.showInputDialog(null, "Informe o novo numero de celular", "Alterar", JOptionPane.QUESTION_MESSAGE);
 
         return novocel[0];
     }
@@ -47,7 +46,7 @@ public class Bancojava2 {
         String aux;
         int i = 0;
 
-        aux = t.nextLine();
+        aux = JOptionPane.showInputDialog(null,"Informe o nome do usuario que procura", "Alterar celular", JOptionPane.QUESTION_MESSAGE);
         for (i = 0; i < name.length; i++) {
             if (aux.equals(name[i])) {
                 return i;
@@ -60,7 +59,7 @@ public class Bancojava2 {
         int i = 0;
         String aux;
 
-        aux = t.nextLine();
+        aux = JOptionPane.showInputDialog(null,"Informe o cpf do usuario que procura", "Deposito", JOptionPane.QUESTION_MESSAGE);
         for (i = 0; i < cpf.length; i++) {
             if (aux.equals(cpf[i])) {
                 return i;
@@ -71,8 +70,10 @@ public class Bancojava2 {
 
     public static float cred(float[] credito) {
         float aux = 0;
+        String input;
         int i = 0;
-        aux = t2.nextFloat();
+        input = JOptionPane.showInputDialog(null,"Informe quanto deseja depositar:", "Deposito", JOptionPane.QUESTION_MESSAGE);
+        aux = Float.parseFloat(input);
         credito[i] += aux;
         return credito[i];
     }
@@ -82,23 +83,23 @@ public class Bancojava2 {
         float saldo[] = new float[10];
         float debito[] = new float[10];
         float credito[] = new float[10];
+        String input;
         String dados[] = new String[10];
         String name[] = new String[10];
         String cpf[] = new String[10];
         String cel[] = new String[10];
 
-        System.out.println("Bem vindo ao Banco DR");
+        JOptionPane.showMessageDialog(null, "Bem vindo ao Banco DR");
         while (opcao != 7) {
 
-            System.out.println("Qual funçao deseja realizar\n1-Cadastro de usuario\n2-Credito\n3-Debito");
-            System.out.println("4-Atualizar conta(apenas cel)\n5-Verificar usuario\n6-Verificar saldo\n7-Sair");
-            opcao = t2.nextInt();
+            input = JOptionPane.showInputDialog(null, "Qual funçao deseja realizar\n1-Cadastro de usuario\n2-Credito\n3-Debito\n4-Atualizar conta(apenas cel)\n5-Verificar usuario\n6-Verificar saldo\n7-Sair", "Banco DR", JOptionPane.QUESTION_MESSAGE);
+            opcao = Integer.parseInt(input);
 
             switch (opcao) {
                 case 1 -> {
 
                     if (i == 10) {
-                        System.out.println("limite de usuarios cadastrados");
+                        JOptionPane.showMessageDialog(null,"limite de usuarios cadastrados","cadastro", JOptionPane.QUESTION_MESSAGE);
                     } else {
                         dados = cad();
                         name[i] = dados[0];
@@ -108,154 +109,127 @@ public class Bancojava2 {
                     }
                 }
                 case 2 -> {
-                    System.out.println("Como deseja procurar o usuario\n1-nome\n2-cpf");
-                    op = t2.nextInt();
+                    input = JOptionPane.showInputDialog(null,"Como deseja procurar o usuario\n1-nome\n2-cpf","Deposito", JOptionPane.QUESTION_MESSAGE);
+                    op = Integer.parseInt(input);
                     switch (op) {
                         case 1 -> {
-                            System.out.println("Informe o nome do usuario que procura");
                             pos = buscaruser(name);
                             if (pos == 15) {
-                                System.out.println("Usuario não encontrado!");
-                            } else {
-                                System.out.println("Informe quanto deseja depositar:");
+                                JOptionPane.showMessageDialog(null,"Usuario não encontrado!", "Deposito", JOptionPane.WARNING_MESSAGE);
+                            } else{
                                 saldo[pos] = cred(credito);
                             }
                         }
                         case 2 -> {
-                            System.out.println("Informe o cpf do usuario que procura");
                             pos = buscarcpf(cpf);
                             if (pos == 99) {
-                                System.out.println("Usuario nao encontrado!");
+                                JOptionPane.showInputDialog(null,"Usuario nao encontrado!", "Deposito", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("Informe quanto deseja depositar:");
                                 saldo[pos] = cred(credito);
                             }
                         }
                     }
                 }
                 case 3 -> {
-                    System.out.println("Como deseja procurar o usuario\n1-nome\n2-cpf");
-                    op = t2.nextInt();
+                    input = JOptionPane.showInputDialog(null,"Como deseja procurar o usuario\n1-nome\n2-cpf", "Saque", JOptionPane.QUESTION_MESSAGE);
+                    op = Integer.parseInt(input);
                     switch (op) {
                         case 1 -> {
-                            System.out.println("Informe o nome do usuario que procura");
                             pos = buscaruser(name);
                             if (pos == 15) {
-                                System.out.println("Usuario não encontrado!");
+                                JOptionPane.showMessageDialog(null,"Usuario não encontrado!", "Saque", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("Informe quanto deseja Sacar:");
-                                debito[pos] = t2.nextFloat();
+                                input = JOptionPane.showInputDialog(null,"Informe quanto deseja Sacar:", "Saque", JOptionPane.WARNING_MESSAGE);
+                                debito[pos] = Float.parseFloat(input);
                                 if (saldo[pos] < debito[pos]) {
-                                    System.out.println("Saldo insuficiente");
+                                    JOptionPane.showMessageDialog(null,"Saldo insuficiente", "Saque",JOptionPane.QUESTION_MESSAGE);
                                 } else {
                                     saldo[pos] = saldo[pos] - debito[pos];
                                 }
                             }
                         }
                         case 2 -> {
-                            System.out.println("Informe o cpf do usuario que procura");
                             pos = buscarcpf(cpf);
                             if (pos == 99) {
-                                System.out.println("Usuario nao encontrado!");
+                                JOptionPane.showMessageDialog(null,"Usuario nao encontrado!", "Saque", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("Informe quanto deseja Sacar:");
-                                debito[pos] = t2.nextFloat();
+                                input = JOptionPane.showInputDialog(null,"Informe quanto deseja Sacar:", "Saque", JOptionPane.QUESTION_MESSAGE);
+                                debito[pos] = Float.parseFloat(input);
                                 if (saldo[pos] < debito[pos]) {
-                                    System.out.println("Saldo insuficiente");
+                                    JOptionPane.showMessageDialog(null,"Saldo insuficiente", "Saque", JOptionPane.WARNING_MESSAGE);
                                 } else {
                                     saldo[pos] = saldo[pos] - debito[pos];
                                 }
                             }
                         }
                     }
-
                 }
                 case 4 -> {
-                    System.out.println("Como deseja procurar o usuario\n1-nome\n2-cpf");
-                    op = t2.nextInt();
+                    input = JOptionPane.showInputDialog(null,"Como deseja procurar o usuario\n1-nome\n2-cpf","Alterar celular", JOptionPane.QUESTION_MESSAGE);
+                    op = Integer.parseInt(input);
                     switch (op) {
                         case 1 -> {
-                            System.out.println("Informe o nome do usuario que procura");
                             pos = buscaruser(name);
                             if (pos == 15) {
-                                System.out.println("Usuario não encontrado!");
+                                JOptionPane.showMessageDialog(null,"Usuario não encontrado!", "Alterar celular", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("nome: " + name[pos]);
-                                System.out.println("celular: " + cel[pos]);
-                                System.out.println("cpf: " + cpf[pos]);
+                                JOptionPane.showMessageDialog(null,"nome: " + name[pos] + "\nCpf: " + cpf[pos] + "\nCel: " + cel[pos]);
                                 cel[pos] = trocacel(cel);
-                                System.out.println("novo numero de celular: " + cel[pos]);
+                                JOptionPane.showMessageDialog(null,"novo numero de celular: " + cel[pos]);
                             }
                         }
                         case 2 -> {
-                            System.out.println("Informe o cpf do usuario que procura");
                             pos = buscarcpf(cpf);
                             if (pos == 99) {
-                                System.out.println("Usuario nao encontrado!");
+                                JOptionPane.showInputDialog(null,"Usuario nao encontrado!", "Alterar celular", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("nome: " + name[pos]);
-                                System.out.println("celular: " + cel[pos]);
-                                System.out.println("cpf: " + cpf[pos]);
+                                JOptionPane.showMessageDialog(null,"nome: " + name[pos] + "\nCpf: " + cpf[pos] + "\nCel: " + cel[pos]);
                                 cel[pos] = trocacel(cel);
-                                System.out.println("novo numero de celular: " + cel[pos]);
+                                JOptionPane.showMessageDialog(null,"novo numero de celular: " + cel[pos]);
                             }
                         }
                     }
                 }
                 case 5 -> {
-                    System.out.println("Como deseja procurar o usuario\n1-nome\n2-cpf:");
-                    op = t2.nextInt();
+                    input = JOptionPane.showInputDialog("Como deseja procurar o usuario\n1-nome\n2-cpf:");
+                    op = Integer.parseInt(input);
                     switch (op) {
                         case 1 -> {
-                            System.out.println("Informe o nome do usuario que procura");
                             pos = buscaruser(name);
                             if (pos == 15) {
-                                System.out.println("Usuario não encontrado!");
+                                JOptionPane.showMessageDialog(null,"Usuario não encontrado!", "Verificar Usuario", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("Nome: " + name[pos]);
-                                System.out.println("cpf: " + cpf[pos]);
-                                System.out.println("cel: " + cel[pos]);
+                                JOptionPane.showMessageDialog(null,"Nome: " + name[pos]+ "\nCpf: " + cpf[pos] + "\nCel: " + cel[pos]);
                             }
                         }
                         case 2 -> {
-                            System.out.println("Informe o cpf do usuario que procura");
                             pos = buscarcpf(cpf);
                             if (pos == 99) {
-                                System.out.println("Usuario nao encontrado!");
+                                JOptionPane.showMessageDialog(null,"Usuario nao encontrado!", "Verificar Usuario", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("Nome: " + name[pos]);
-                                System.out.println("cpf: " + cpf[pos]);
-                                System.out.println("cel: " + cel[pos]);
+                                JOptionPane.showMessageDialog(null,"Nome: " + name[pos]+ "\nCpf: " + cpf[pos] + "\nCel: " + cel[pos]);
                             }
                         }
                     }
                 }
                 case 6 -> {
-                    System.out.println("Como deseja procurar o usuario\n1-nome\n2-cpf:");
-                    op = t2.nextInt();
+                    input = JOptionPane.showInputDialog(null,"Como deseja procurar o usuario\n1-nome\n2-cpf:", "Verificar Saldo", JOptionPane.QUESTION_MESSAGE);
+                    op = Integer.parseInt(input);
                     switch (op) {
                         case 1 -> {
-                            System.out.println("Informe o nome do usuario que procura");
                             pos = buscaruser(name);
                             if (pos == 15) {
-                                System.out.println("Usuario não encontrado!");
+                                JOptionPane.showMessageDialog(null,"Usuario não encontrado!","Verificar Saldo", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("Nome: " + name[pos]);
-                                System.out.println("cpf: " + cpf[pos]);
-                                System.out.println("cel: " + cel[pos]);
-                                System.out.println("saldo: " + saldo[pos] + " R$");
+                                JOptionPane.showMessageDialog(null,"Nome: " + name[pos]+ "\nCpf: " + cpf[pos] + "\nCel: " + cel[pos]+ "\nSaldo: " + saldo[pos] + " R$");
                             }
                         }
                         case 2 -> {
-                            System.out.println("Informe o cpf do usuario que procura");
                             pos = buscarcpf(cpf);
                             if (pos == 99) {
-                                System.out.println("Usuario nao encontrado!");
+                                JOptionPane.showMessageDialog(null,"Usuario nao encontrado!", "Verificar saldo", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                System.out.println("Nome: " + name[pos]);
-                                System.out.println("cpf: " + cpf[pos]);
-                                System.out.println("cel: " + cel[pos]);
-                                System.out.println("saldo: " + saldo[pos] + " R$");
+                                JOptionPane.showMessageDialog(null,"Nome: " + name[pos] + "\n CPF: " + cpf[pos] + "\nCel: " + cel[pos] + "\nSaldo: " + saldo[pos] + " R$" );
                             }
                         }
                     }
@@ -263,4 +237,8 @@ public class Bancojava2 {
             }
         }
     }
-}
+
+    private static float IntegerparseFloat(String input) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    }
